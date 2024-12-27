@@ -1,0 +1,216 @@
+/* Genel stil ayarları */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /* Sayfa yüksekliğini tam yapar */
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Ürün grid ve ürün stili */
+.product-grid {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem 0;
+    overflow-x: hidden;
+    /* Yalnızca yatay kaydırma */
+    scroll-snap-type: x mandatory;
+    width: 100%;
+    justify-content: center;
+    /* Ürünleri yatayda ortalar */
+}
+
+.product {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    text-align: center;
+    min-width: 250px;
+    scroll-snap-align: start;
+    /* Ürünlerin hizalanmasını sağla */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* Resim ve butonun aynı hizaya gelmesini sağlar */
+    height: 350px;
+    /* Yüksekliği sabitleyerek hizalamayı düzgün yapar */
+}
+
+.product img {
+    width: 200px;
+    height: 200px;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.product h3 {
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.product p {
+    color: #007BFF;
+    font-weight: bold;
+    margin: 0.5rem 0;
+}
+
+.product button {
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: auto;
+    /* Butonun en alt kısma yerleşmesini sağlar */
+    font-size: 0.9rem;
+}
+
+.product button:hover {
+    background: #0056b3;
+}
+
+/* Slide butonları */
+.slide-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.slide-btn:hover {
+    background-color: #555;
+}
+
+.slide-btn.prev {
+    left: 1rem;
+}
+
+.slide-btn.next {
+    right: 1rem;
+}
+
+/* Header stil ayarları */
+header {
+    background: #333;
+    color: #fff;
+    padding: 1rem 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+header nav ul li a:hover {
+    text-decoration: underline;
+}
+
+/* Ana içerik için */
+main {
+    flex: 1;
+    padding-bottom: 50px;
+    /* Footer'ın üstüne gelmemesi için biraz boşluk bırak */
+}
+
+/* Footer için */
+footer {
+    background: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    margin-top: auto;
+    /* Footer'ı sayfanın en altına sabitler */
+    width: 100%;
+}
+
+/* Kategoriler Bölümü */
+.categories {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.categories h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.categories p {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+/* Kategori Listeleme */
+.categories ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    /* Kategorilerin alt alta gelmesini sağlar */
+}
+
+.categories ul li {
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    width: 200px;
+    text-align: center;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.categories ul li:hover {
+    background-color: #007BFF;
+    color: #fff;
+    transform: scale(1.05);
+}
+
+.categories ul li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.categories ul li a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
