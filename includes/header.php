@@ -3,19 +3,19 @@
         <ul>
             <li><a href="index.php">Home</a></li>
             <li><a href="categories.php">Categories</a></li>
+            <?php if (isset($_SESSION['user_id']) && $_SESSION['role'] === 'user'): ?>
+            <!-- Sadece kullanıcılar için Cart bağlantısını göster -->
             <li><a href="cart.php">Cart</a></li>
-            <li><a href="contact.php">Contact</a></li>
+            <?php endif; ?>
 
             <?php if (isset($_SESSION['user_id'])): ?>
             <!-- Kullanıcı giriş yaptıysa -->
             <li><a href="logout.php">Logout</a></li>
-            <li><a href="myCart.php">My Cart</a></li>
 
             <?php if ($_SESSION['role'] === 'admin'): ?>
-            <!-- Adminse, Add Product butonunu göster -->
-            <li><a href="add_product.php">Add Market Item</a></li>
+            <!-- Adminse, Dashboard butonunu göster -->
+            <li><a href="admin/dashboard.php">Dashboard</a></li>
             <?php endif; ?>
-
             <?php else: ?>
             <!-- Kullanıcı giriş yapmamışsa -->
             <li><a href="login.php">Login</a></li>

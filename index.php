@@ -1,87 +1,98 @@
 <?php
+session_start();
 include 'includes/header.php';
 include "includes/db.php";
 include "stmt.php";
 
-// Kategori ID'sini URL'den alıyoruz
+// Kategori ID'sini URL'den al
 $cat_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-// Kategoriye ait ürünleri alıyoruz
-$prod = getProdByCat($cat_id); // getProdByCat fonksiyonu kategoriye göre ürünleri alır
+// Kategoriye ait ürünleri al
+$products = getProdByCat($cat_id);
 
 // Kategori adı
-$categoryName = '';
-if ($cat_id) {
-    // Kategoriyi veritabanından alıyoruz
-    $categoryName = getCategoryNameById($cat_id); // Bu fonksiyon, kategori adını döndürür
-} else {
-    $categoryName = "All Products"; // Kategori seçilmemişse, "Tüm Ürünler" göster
-}
+$categoryName = $cat_id ? getCategoryNameById($cat_id) : "All Products";
 ?>
 
-<main>
+<ma>
     <h1><?php echo htmlspecialchars($categoryName); ?></h1>
-    <p>Explore products by category:</p>
+    <p>Explore products in this category:</p>
 
-    <!-- Ürünleri göster -->
+    <!-- Ürün Grid ve Kaydırma Butonları -->
     <div class="main-container">
-        <!-- Horizontal Slide Buttons -->
+        <!-- Sol Kaydırma Butonu -->
         <button class="slide-btn prev" onclick="navigateSlide('prev')">⬅️</button>
         <div class="product-grid" id="productGrid">
-            <?php
-            // Eğer ürünler varsa
-            if ($prod) {
-                $displayedProducts = array_slice($prod, 0, 3); // İlk 3 ürünü al
-            
-                foreach ($displayedProducts as $product) {
-                    echo "<div class='product'>";
-                    echo "<img src='images/" . htmlspecialchars($product['image']) . "'>";
-                    echo "<h3>" . htmlspecialchars($product['name']) . "</h3>";
-                    echo "<p>$" . htmlspecialchars($product['price']) . "</p>";
-                    echo "<button>Add to Cart</button>";
-                    echo "</div>";
-                }
-            } else {
-                echo "<p>No products available in this category.</p>";
-            }
-            ?>
+            <?php if ($products): ?>
+            <?php foreach ($products as $product): ?>
+            <div class="product">
+                <img src="images/<?php echo htmlspecialchars($product['image']); ?>"
+                    alt="<?php echo htmlspecialchars($product['name']); ?>">
+                <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                <p>$<?php echo number_format($product['price'], 2); ?></p>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
+                <!-- Kullanıcılar için Add to Cart butonu -->
+                <form action="add_to_cart.php" method="POST">
+                    <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                    <button type="submit">Add to Cart</button>
+                </form>
+                <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                <!-- Adminler için bilgilendirme mesajı -->
+                <p><a href="login.php">Log in as market user to add cart</a></p>
+                <?php else: ?>
+                <!-- Giriş yapmayan kullanıcılar için -->
+                <p><a href="login.php">Log in to add to cart</a></p>
+                <?php endif; ?>
+            </div>
+            <?php endforeach; ?>
+            <?php else: ?>
+            <p>No products available in this category.</p>
+            <?php endif; ?>
         </div>
+        <!-- Sağ Kaydırma Butonu -->
         <button class="slide-btn next" onclick="navigateSlide('next')">➡️</button>
     </div>
-</main>
+</ma in>
 
 <script>
-    let currentIndex = 0; // Başlangıçta gösterilen ürünlerin index'i
+let currentIndex = 0;
 
-    function navigateSlide(direction) {
-        const productGrid = document.getElementById('productGrid');
-        const products = <?php echo json_encode($prod); ?>; // PHP'den ürünleri JavaScript'e aktarıyoruz
+function navigateSlide(direction) {
+    const productGrid = document.getElementById('productGrid');
+    const products = <?php echo json_encode($products); ?>;
 
-        if (!productGrid) return;
+    if (!productGrid) return;
 
-        // yönlere göre index güncellenmesi
-        if (direction === 'prev') {
-            currentIndex = (currentIndex - 3 + products.length) % products.length; // 3 ürün kaydırma
-        } else if (direction === 'next') {
-            currentIndex = (currentIndex + 3) % products.length;
-        }
+    if (direction === 'prev') {
+        currentIndex = (currentIndex - 3 + products.length) % products.length;
+    } else if (direction === 'next') {
+        currentIndex = (currentIndex + 3) % products.length;
+    }
 
-        // Yeni 3 ürünü göstermek için grid'i güncelle
-        const displayedProducts = products.slice(currentIndex, currentIndex + 3); // 3 ürün al
-        productGrid.innerHTML = ''; // Eski ürünleri temizle
+    const displayedProducts = products.slice(currentIndex, currentIndex + 3);
+    productGrid.innerHTML = '';
 
-        displayedProducts.forEach(product => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
-                <img src='images/${product.image}' alt='${product.name}'>
+    displayedProducts.forEach(product => {
+        const productDiv = document.createElement('div');
+        productDiv.classList.add('product');
+        productDiv.innerHTML = `
+                <img src="images/${product.image}" alt="${product.name}">
                 <h3>${product.name}</h3>
                 <p>$${product.price}</p>
-                <button>Add to Cart</button>
+                <?php if (isset($_SESSION['role']) && $_SESSION['role'] === 'user'): ?>
+                                <form action="add_to_cart.php" method="POST">
+                                    <input type="hidden" name="product_id" value="${product.id}">
+                                    <button type="submit">Add to Cart</button>
+                                </form>
+                    <?php elseif (isset($_SESSION['role']) && $_SESSION['role'] === 'admin'): ?>
+                                    <p><a href="login.php">Log in as market user to add cart</a></p>
+                    <?php else: ?>
+                                <p><a href="login.php">Log in to add to cart</a></p>
+                <?php endif; ?>
             `;
-            productGrid.appendChild(productDiv);
-        });
-    }
+        productGrid.appendChild(productDiv);
+    });
+}
 </script>
 
 <?php include 'includes/footer.php'; ?>

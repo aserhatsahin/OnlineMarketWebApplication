@@ -129,31 +129,31 @@ include "includes/navigation.php";
         $admins_count = $stmt->fetchColumn();
         ?>
         <script>
-            google.charts.load('current', {
-                'packages': ['corechart']
-            });
-            google.charts.setOnLoadCallback(drawChart);
+        google.charts.load('current', {
+            'packages': ['corechart']
+        });
+        google.charts.setOnLoadCallback(drawChart);
 
-            function drawChart() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Contry', 'Mhl'],
-                    ['Products', <?php echo $product_count ?>],
-                    ['Users', <?php echo $user_count ?>],
-                    ['Users_admins', <?php echo $admins_count ?>],
-                    ['Users_users', <?php echo $users_count ?>],
-                    ['Categories', <?php echo $categories_count ?>],
-                ]);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Contry', 'Mhl'],
+                ['Products', <?php echo $product_count ?>],
+                ['Users', <?php echo $user_count ?>],
+                ['Users_admins', <?php echo $admins_count ?>],
+                ['Users_users', <?php echo $users_count ?>],
+                ['Categories', <?php echo $categories_count ?>],
+            ]);
 
-                var options = {
-                    title: 'Summary'
-                };
+            var options = {
+                title: 'Summary'
+            };
 
-                var chart = new google.visualization.PieChart(document.getElementById('myChart'));
-                chart.draw(data, options);
-            }
+            var chart = new google.visualization.PieChart(document.getElementById('myChart'));
+            chart.draw(data, options);
+        }
         </script>
 
     </div>
 </div>
 
-<?php include "includes/footer.php" ?> 
+<?php include "includes/footer.php" ?>

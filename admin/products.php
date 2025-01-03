@@ -8,8 +8,8 @@ if (isset($_POST["submit"])) {
     $cat_title = $_POST['cat_title'];
     if (!empty($cat_title)) {
         $query = "INSERT INTO categories (name) VALUES (?)";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$cat_title]);   
+        $stmt = $db->prepare($query);
+        $stmt->execute([$cat_title]);
     } else {
         $error_message = "Category field is required.";
     }

@@ -8,8 +8,8 @@ if (isset($_POST["submit"])) {
     $cat_title = trim($_POST['cat_title']);
     if (!empty($cat_title)) {
         $query = "INSERT INTO categories (name) VALUES (?)";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$cat_title]);   
+        $stmt = $db->prepare($query);
+        $stmt->execute([$cat_title]);
     } else {
         $error_message = "Category field is required.";
     }
@@ -83,14 +83,16 @@ if (isset($_GET["edit"]) && isset($_POST["update_category"])) {
                         if ($Row) {
                             $cat_title = $Row["name"];
                             ?>
-                            <div class="form-group">
-                                <label for="cat_title">Edit Category</label>
-                                <input type="text" value="<?php echo $cat_title; ?>" class="form-control" name="cat_title" id="">
-                            </div>
-                            <div class="form-group">
-                                <input class="btn btn-primary" type="submit" name="update_category" value="Edit Category">
-                            </div>
-                        <?php };
+                    <div class="form-group">
+                        <label for="cat_title">Edit Category</label>
+                        <input type="text" value="<?php echo $cat_title; ?>" class="form-control" name="cat_title"
+                            id="">
+                    </div>
+                    <div class="form-group">
+                        <input class="btn btn-primary" type="submit" name="update_category" value="Edit Category">
+                    </div>
+                    <?php }
+                        ;
                     }
                     ?>
                 </form>
