@@ -2,44 +2,17 @@
 include "includes/header.php";
 include "includes/navigation.php";
 
-$error_message = "";
-// Add new Category.
-if (isset($_POST["submit"])) {
-    $cat_title = $_POST['cat_title'];
-    if (!empty($cat_title)) {
-        $query = "INSERT INTO categories (name) VALUES (?)";
-        $stmt = $db->prepare($query);
-        $stmt->execute([$cat_title]);
-    } else {
-        $error_message = "Category field is required.";
-    }
-}
-
-// Delete Category.
+// Delete Product
 if (isset($_GET["delete"])) {
-    $cat_id = $_GET['delete'];
-    try {
-        $query = "DELETE FROM categories WHERE id = ?";
-        $stmt = $db->prepare($query);
-        $stmt->execute([$cat_id]);
-        header("Location: categories.php");
-        exit;
-    } catch (PDOException $ex) {
-        die("Query Failed: " . $ex->getMessage());
-    }
-}
+    $product_id = $_GET['delete'];
 
-// Update Category.
-if (isset($_GET["edit"]) && isset($_POST["update_category"])) {
-    $cat_id = $_GET['edit'];
-    $cat_title = $_POST["cat_title"];
     try {
-        $query = "UPDATE categories SET name = :cat_title WHERE id = :cat_id";
+        // Prepare the DELETE query
+        $query = "DELETE FROM products WHERE id = ?";
         $stmt = $db->prepare($query);
-        $stmt->bindParam(':cat_title', $cat_title, PDO::PARAM_STR);
-        $stmt->bindParam(':cat_id', $cat_id, PDO::PARAM_INT);
-        $stmt->execute();
-        header("Location: categories.php");
+        $stmt->execute([$product_id]);
+
+        header("Location: products.php");
         exit;
     } catch (PDOException $ex) {
         die("Query Failed: " . $ex->getMessage());

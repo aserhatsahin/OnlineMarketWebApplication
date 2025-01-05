@@ -2,7 +2,7 @@
 // Update account info accordingly
 $dsn = "mysql:host=localhost;port=3306;dbname=online_market;charset=utf8mb4";  // Change dbname to your actual DB name
 $user = "root";  // Set your DB username
-$pass = "";  // Set your DB password
+$pass = "root";  // Set your DB password
 
 try {
     // Create a new PDO instance
